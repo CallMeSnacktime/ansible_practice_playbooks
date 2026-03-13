@@ -1,0 +1,34 @@
+---
+
+- hosts: all
+  become: true
+  pre-tasks:
+
+  - name: Copy file for backup
+    tags: cipher, rhel
+    ansible.builtin.copy:
+      src: /home/teebz25/openssh.config
+      dest: /home/teebz25/openssh.config.bk
+      owner: teebz25
+      group: teebz25
+      mode: '0644'
+    when: ansible_distribution == "RedHat"
+  
+###########################################################################
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: Replace Cipher
+    tags: cipher, rhel
+    lineinfile: 
+      path: /home/teebz25/openssh.config
+      regexp: '^Cipers'
+      # New Cipher
+      line: Ciphers aes256-gcm@openssh.com,aes256-ctr,aes128-gcm@openssh.com,aes-ctr
+      # Old Cipher
+      #line: Ciphers aes256-gcm@openssh.com,chacha20-poly1305@openssh.com,aes256-ctr,aes128-gcm@openssh.com,aes128-ctr
+    when: ansible_distribution == "RedHat"
+
+  
