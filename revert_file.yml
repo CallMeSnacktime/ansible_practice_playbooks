@@ -2,13 +2,14 @@
 
 - hosts: all
   become: true
-  pre-tasks:
+  tasks:
 
   - name: Copy file for backup
     tags: cipher, rhel
     ansible.builtin.copy:
       src: /home/teebz25/openssh.config.bk
       dest: /home/teebz25/openssh.config
+      remote_src: true
       owner: teebz25
       group: teebz25
       mode: '0644'

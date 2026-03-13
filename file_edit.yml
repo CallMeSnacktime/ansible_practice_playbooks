@@ -2,13 +2,14 @@
 
 - hosts: all
   become: true
-  pre-tasks:
+  pre_tasks:
 
   - name: Copy file for backup
     tags: cipher, rhel
     ansible.builtin.copy:
       src: /home/teebz25/openssh.config
       dest: /home/teebz25/openssh.config.bk
+      remote_src: true
       owner: teebz25
       group: teebz25
       mode: '0644'
@@ -24,7 +25,7 @@
     tags: cipher, rhel
     lineinfile: 
       path: /home/teebz25/openssh.config
-      regexp: '^Cipers'
+      regexp: '^Ciphers'
       # New Cipher
       line: Ciphers aes256-gcm@openssh.com,aes256-ctr,aes128-gcm@openssh.com,aes-ctr
       # Old Cipher
